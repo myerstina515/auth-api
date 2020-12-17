@@ -40,7 +40,7 @@ users.statics.authenticateBasic = async function (username, password) {
   const user = await this.findOne({ username })
   const valid = await bcrypt.compare(password, user.password)
   if (valid) { return user; }
-  throw new Error('Invalid User');
+  throw new Error('Invalid User', e.message);
 }
 
 // BEARER AUTH
