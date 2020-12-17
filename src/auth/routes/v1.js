@@ -10,11 +10,15 @@ const models = new Map();
 
 router.param('model', (req, res, next) => {
   const modelName = req.params.model;
+  console.log('this is the model name', modelName);
   if (models.has(modelName)) {
+    console.log('inside models.has');
     req.model = models.get(modelName);
+    console.log('this is the req model', req.model);
     next();
   } else {
-    const fileName = `${__dirname}/../models/${modelName}/model.js`;
+    console.log('inside else');
+    const fileName = `${__dirname}/../../models/${modelName}/model.js`;
     if (fs.existsSync(fileName)) {
       const model = require(fileName);
       models.set(modelName, new Collection(model));
@@ -33,7 +37,7 @@ router.post('/:model', handleCreate);
 router.put('/:model/:id', handleUpdate);
 router.delete('/:model/:id', handleDelete);
 
-async function handleGetAll(req, res) {
+async function handleGetAll(req, res){
   let allRecords = await req.model.get();
   res.status(200).json(allRecords);
 }
@@ -46,6 +50,7 @@ async function handleGetOne(req, res) {
 
 async function handleCreate(req, res) {
   let obj = req.body;
+  console.log(req.model);
   let newRecord = await req.model.create(obj);
   res.status(201).json(newRecord);
 }

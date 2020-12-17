@@ -2,7 +2,7 @@
 
 const users = require('../models/users.js')
 
-module.exports = async (req, res, next) => {
+module.exports = async function(req, res, next) {
 
   try {
 
